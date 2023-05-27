@@ -122,7 +122,10 @@ function replaceSourceComment (source, commentPrefix, commentStart, baseUrl) {
   const commentEnd = source.indexOf('\n', urlStart)
   const urlEnd = commentEnd !== -1 ? commentEnd : undefined
 
-  const url = new URL(source.slice(urlStart, urlEnd), baseUrl).toString()
+  const urlRelative = source.slice(urlStart, urlEnd)
+
+  // FIXME: doesn't work for urls starting with /
+  const url = resolveSync(urlRelative.startsWith('.') ? urlRelative : `./${urlRelative}`, baseUrl);
 
   return source.slice(0, urlStart) + url + (urlEnd ? source.slice(urlEnd) : '')
 }

@@ -251,7 +251,7 @@ function resolveDeps (load, seen) {
   function pushStringTo (originalIndex) {
     while (dynamicImportEndStack[dynamicImportEndStack.length - 1] < originalIndex) {
       const dynamicImportEnd = dynamicImportEndStack.pop();
-      resolvedSource += `${source.slice(lastIndex, dynamicImportEnd)}, ${urlJsString(load.r)}`;
+      resolvedSource += `${source.slice(lastIndex, dynamicImportEnd)}, ${urlJsString(load.r.startsWith('blob:') ? load.u : load.r)}`;
       lastIndex = dynamicImportEnd;
     }
     resolvedSource += source.slice(lastIndex, originalIndex);
@@ -314,7 +314,7 @@ function resolveDeps (load, seen) {
     const commentEnd = source.indexOf('\n', urlStart);
     const urlEnd = commentEnd !== -1 ? commentEnd : source.length;
     pushStringTo(urlStart);
-    resolvedSource += new URL(source.slice(urlStart, urlEnd), load.r).href;
+    resolvedSource += resolveSync(source.slice(urlStart, urlEnd), load.r.startsWith('blob:') ? load.u : load.r);
     lastIndex = urlEnd;
   }
 
@@ -471,7 +471,7 @@ function getOrCreateLoad (url, fetchOpts, parent, source) {
       if (d >= 0 && !supportsDynamicImport || d === -2 && !supportsImportMeta)
         load.n = true;
       if (d !== -1 || !n) return;
-      const { r, b } = await resolve(n, load.r || load.u);
+      const { r, b } = await resolve(n, load.r.startsWith('blob:') ? load.u : (load.r || load.u) );
       if (b && (!supportsImportMaps || importMapSrcOrLazy))
         load.n = true;
       if (d !== -1) return;

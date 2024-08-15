@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: main
+    branches: reflame-bundler-support
   pull_request:
-    branches: main
+    branches: reflame-bundler-support
 
 jobs:
   test-firefox:

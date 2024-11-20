@@ -315,7 +315,7 @@ function resolveDeps (load, seen) {
   for (const { s: start, ss: statementStart, se: statementEnd, d: dynamicImportIndex, t } of imports) {
     // source phase
     if (t === 4) {
-      let { l: depLoad } = load.d[depIndex++];
+      const { l: depLoad } = load.d[depIndex++];
       pushStringTo(statementStart);
       resolvedSource += 'import ';
       lastIndex = statementStart + 14;
@@ -425,7 +425,7 @@ const cssContentType = /^(text|application)\/css(;|$)/;
 const cssUrlRegEx = /url\(\s*(?:(["'])((?:\\.|[^\n\\"'])+)\1|((?:\\.|[^\s,"'()\\])+))\s*\)/g;
 
 // restrict in-flight fetches to a pool of 100
-let p = [];
+const p = [];
 let c = 0;
 function pushFetchPool () {
   if (++c > 100)

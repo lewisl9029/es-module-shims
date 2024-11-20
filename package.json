@@ -28,6 +28,7 @@
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-replace": "^2.4.2",
+    "chomp": "^0.2.23",
     "es-module-lexer": "1.5.4",
     "kleur": "^4.1.4",
     "mime-types": "^2.1.33",
@@ -46,6 +47,7 @@
   },
   "scripts": {
     "build": "npm install -g chomp ; chomp build",
+    "build-reflame": "chomp build && cp dist/es-module-shims.js ../../reflame/code/deployer/app/esms/entry.js",
     "test": "npm install -g chomp ; chomp test"
   },
   "repository": {
